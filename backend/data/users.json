@@ -1,0 +1,14 @@
+{
+  "Anthony achibi": {
+    "username": "Anthony achibi",
+    "email": "anthonyachibi@gmail.com",
+    "password": "$2b$10$lKQ6l.afDZePMB67v/2hje1PwvrM.j2YWPPNhrUCD3gwoewtdu9QO",
+    "createdAt": "2025-11-01T19:25:36.064Z"
+  },
+  "anthony": {
+    "username": "anthony",
+    "email": "anthonyjoseph2569@gmail.com",
+    "password": "$2b$10$7TI4dvJGTvtJqPhmkmhraOwO.NPCMhYWdC3.EjjOideFDfcjGqzi6",
+    "createdAt": "2025-11-01T19:52:14.797Z"
+  }
+}

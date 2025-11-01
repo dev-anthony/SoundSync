@@ -1,0 +1,48 @@
+{
+  "Anthony achibi": {
+    "repos": [
+      {
+        "repoName": "producer-backups",
+        "repoUrl": "https://github.com/dev-anthony/producer-backups",
+        "cloneUrl": "https://github.com/dev-anthony/producer-backups.git",
+        "isPrivate": true,
+        "createdAt": "2025-11-01T19:43:45.363Z"
+      }
+    ],
+    "projects": [
+      {
+        "id": "proj_1762026383950",
+        "name": "trap",
+        "path": "C:\\Users\\Anthony achibi\\Documents\\Image-Line\\FL Studio\\Projects\\Templates",
+        "repoName": "producer-backups",
+        "lastBackup": "2025-11-01T19:47:31.823Z",
+        "filesCount": 1,
+        "size": "0.00 MB",
+        "createdAt": "2025-11-01T19:46:23.950Z"
+      }
+    ]
+  },
+  "anthony": {
+    "repos": [
+      {
+        "repoName": "afro",
+        "repoUrl": "https://github.com/dev-anthony/afro",
+        "cloneUrl": "https://github.com/dev-anthony/afro.git",
+        "isPrivate": true,
+        "createdAt": "2025-11-01T19:54:59.282Z"
+      }
+    ],
+    "projects": [
+      {
+        "id": "proj_1762026931197",
+        "name": " afro",
+        "path": "C:\\Users\\Anthony achibi\\Documents\\Image-Line\\FL Studio\\Projects\\Templates",
+        "repoName": "afro",
+        "lastBackup": "2025-11-01T20:03:35.258Z",
+        "filesCount": 1,
+        "size": "6.71 MB",
+        "createdAt": "2025-11-01T19:55:31.197Z"
+      }
+    ]
+  }
+}
