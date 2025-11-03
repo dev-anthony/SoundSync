@@ -44,5 +44,35 @@
         "createdAt": "2025-11-01T19:55:31.197Z"
       }
     ]
+  },
+  "ene": {
+    "repos": [
+      {
+        "repoName": "test-5",
+        "repoUrl": "https://github.com/dev-anthony/test-5",
+        "cloneUrl": "https://github.com/dev-anthony/test-5.git",
+        "isPrivate": true,
+        "createdAt": "2025-11-02T19:53:10.786Z"
+      },
+      {
+        "repoName": "test-by creating new repo in add modal",
+        "repoUrl": "https://github.com/dev-anthony/test-by-creating-new-repo-in-add-modal",
+        "cloneUrl": "https://github.com/dev-anthony/test-by-creating-new-repo-in-add-modal.git",
+        "isPrivate": true,
+        "createdAt": "2025-11-02T19:54:18.688Z"
+      }
+    ],
+    "projects": [
+      {
+        "id": "proj_1762113258728",
+        "name": "test beat",
+        "path": "C:\\Users\\Anthony achibi\\Documents\\Image-Line\\FL Studio\\Projects\\Templates",
+        "repoName": "test-by creating new repo in add modal",
+        "lastBackup": "2025-11-02T20:01:49.306Z",
+        "filesCount": 1,
+        "size": "6.71 MB",
+        "createdAt": "2025-11-02T19:54:18.728Z"
+      }
+    ]
   }
 }

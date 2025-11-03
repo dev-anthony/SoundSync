@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../services/api';
 
 const AddProjectModal = ({ onClose, onAdd, repos, showNotification }) => {
   const [formData, setFormData] = useState({
@@ -24,16 +25,41 @@ const AddProjectModal = ({ onClose, onAdd, repos, showNotification }) => {
 
     setLoading(true);
 
-    const projectData = {
-      name: formData.name,
-      path: formData.path,
-      repoName: formData.repoOption === 'new' ? formData.repoName : repos[0].repoName
-    };
-
     try {
+      let repoNameToUse = formData.repoName;
+
+      // If creating new repo, create it first
+      if (formData.repoOption === 'new') {
+        console.log('Creating new repository:', formData.repoName);
+        
+        const repoResponse = await api.post('/github/create-repo', {
+          repoName: formData.repoName,
+          isPrivate: true
+        });
+
+        console.log('Repository created:', repoResponse.data);
+        repoNameToUse = repoResponse.data.repoName;
+        
+        showNotification(`Repository "${repoNameToUse}" created successfully!`);
+      } else {
+        // Use existing repo
+        repoNameToUse = repos[0].repoName;
+      }
+
+      // Now add the project with the repo
+      const projectData = {
+        name: formData.name,
+        path: formData.path,
+        repoName: repoNameToUse
+      };
+
       await onAdd(projectData);
     } catch (error) {
-      // Error handled in parent
+      console.error('Error:', error);
+      showNotification(
+        error.response?.data?.error || 'Failed to add project', 
+        'error'
+      );
     } finally {
       setLoading(false);
     }

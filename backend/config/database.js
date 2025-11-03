@@ -32,7 +32,7 @@ const pool = mysql.createPool({
     console.log('✅ Database connected successfully');
     connection.release();
   } catch (err) {
-    console.error('❌ Database connection failed:', err.message);
+    console.error('Database connection failed:', err.message);
   }
 })();
 
