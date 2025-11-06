@@ -1,77 +1,55 @@
 {
-  "Anthony achibi": {
-    "repos": [
-      {
-        "repoName": "producer-backups",
-        "repoUrl": "https://github.com/dev-anthony/producer-backups",
-        "cloneUrl": "https://github.com/dev-anthony/producer-backups.git",
-        "isPrivate": true,
-        "createdAt": "2025-11-01T19:43:45.363Z"
-      }
-    ],
-    "projects": [
-      {
-        "id": "proj_1762026383950",
-        "name": "trap",
-        "path": "C:\\Users\\Anthony achibi\\Documents\\Image-Line\\FL Studio\\Projects\\Templates",
-        "repoName": "producer-backups",
-        "lastBackup": "2025-11-01T19:47:31.823Z",
-        "filesCount": 1,
-        "size": "0.00 MB",
-        "createdAt": "2025-11-01T19:46:23.950Z"
-      }
-    ]
-  },
   "anthony": {
     "repos": [
       {
-        "repoName": "afro",
-        "repoUrl": "https://github.com/dev-anthony/afro",
-        "cloneUrl": "https://github.com/dev-anthony/afro.git",
+        "repoName": "producer-backups5",
+        "repoUrl": "https://github.com/dev-anthony/producer-backups5",
+        "cloneUrl": "https://github.com/dev-anthony/producer-backups5.git",
         "isPrivate": true,
-        "createdAt": "2025-11-01T19:54:59.282Z"
-      }
-    ],
-    "projects": [
-      {
-        "id": "proj_1762026931197",
-        "name": " afro",
-        "path": "C:\\Users\\Anthony achibi\\Documents\\Image-Line\\FL Studio\\Projects\\Templates",
-        "repoName": "afro",
-        "lastBackup": "2025-11-01T20:03:35.258Z",
-        "filesCount": 1,
-        "size": "6.71 MB",
-        "createdAt": "2025-11-01T19:55:31.197Z"
-      }
-    ]
-  },
-  "ene": {
-    "repos": [
-      {
-        "repoName": "test-5",
-        "repoUrl": "https://github.com/dev-anthony/test-5",
-        "cloneUrl": "https://github.com/dev-anthony/test-5.git",
-        "isPrivate": true,
-        "createdAt": "2025-11-02T19:53:10.786Z"
+        "createdAt": "2025-11-06T13:33:52.323Z"
       },
       {
-        "repoName": "test-by creating new repo in add modal",
-        "repoUrl": "https://github.com/dev-anthony/test-by-creating-new-repo-in-add-modal",
-        "cloneUrl": "https://github.com/dev-anthony/test-by-creating-new-repo-in-add-modal.git",
+        "repoName": "producer-backups6",
+        "repoUrl": "https://github.com/dev-anthony/producer-backups6",
+        "cloneUrl": "https://github.com/dev-anthony/producer-backups6.git",
         "isPrivate": true,
-        "createdAt": "2025-11-02T19:54:18.688Z"
+        "createdAt": "2025-11-06T13:43:11.855Z"
+      },
+      {
+        "repoName": "producer-backups7",
+        "repoUrl": "https://github.com/dev-anthony/producer-backups7",
+        "cloneUrl": "https://github.com/dev-anthony/producer-backups7.git",
+        "isPrivate": true,
+        "createdAt": "2025-11-06T14:21:05.403Z"
+      },
+      {
+        "repoName": "producer-backups8",
+        "repoUrl": "https://github.com/dev-anthony/producer-backups8",
+        "cloneUrl": "https://github.com/dev-anthony/producer-backups8.git",
+        "isPrivate": true,
+        "createdAt": "2025-11-06T14:45:25.593Z"
       }
     ],
     "projects": [
       {
-        "id": "proj_1762113258728",
-        "name": "test beat",
-        "path": "C:\\Users\\Anthony achibi\\Documents\\Image-Line\\FL Studio\\Projects\\Templates",
-        "repoName": "test-by creating new repo in add modal",
-        "lastBackup": "2025-11-02T20:01:49.306Z",
+        "id": "proj_1762438867358",
+        "name": "test",
+        "path": "C:\\Users\\Anthony achibi\\SoundSync\\backend\\projects\\anthony\\proj_1762438867358",
+        "repoName": "producer-backups7",
+        "lastBackup": null,
         "filesCount": 1,
         "size": "6.71 MB",
-        "createdAt": "2025-11-02T19:54:18.728Z"
+        "createdAt": "2025-11-06T14:21:07.394Z"
+      },
+      {
+        "id": "proj_1762440327568",
+        "name": "r&b",
+        "path": "C:\\Users\\Anthony achibi\\SoundSync\\backend\\projects\\anthony\\proj_1762440327568",
+        "repoName": "producer-backups8",
+        "lastBackup": "2025-11-06T14:47:58.119Z",
+        "filesCount": 2,
+        "size": "13.22 MB",
+        "createdAt": "2025-11-06T14:45:27.601Z"
       }
     ]
   }

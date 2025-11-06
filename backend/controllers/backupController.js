@@ -262,196 +262,302 @@ const path = require('path');
 const { decrypt } = require('../utils/encryption');
 const { readJSON, writeJSON, CONFIG_FILE, TOKENS_FILE } = require('../utils/storage');
 
-const backupProject = async (req, res) => {
-  console.log('=== BACKUP PROJECT CALLED ===');
-  console.log('Project ID:', req.params.id);
-  console.log('User:', req.user?.username);
+const getDirSize = async (dir) => {
+  let size = 0;
+  const files = await fs.readdir(dir, { withFileTypes: true });
+  for (const file of files) {
+    const fullPath = path.join(dir, file.name);
+    if (file.isDirectory()) {
+      size += await getDirSize(fullPath);
+    } else {
+      const stat = await fs.stat(fullPath);
+      size += stat.size;
+    }
+  }
+  return size;
+};
+
+// const backupProject = async (req, res) => {
+//   console.log('=== BACKUP PROJECT CALLED ===');
+//   console.log('Project ID:', req.params.id);
+//   console.log('User:', req.user?.username);
   
+//   try {
+//     const { id } = req.params;
+//     const username = req.user.username;
+
+//     console.log('Reading config and tokens...');
+//     const config = await readJSON(CONFIG_FILE);
+//     const tokens = await readJSON(TOKENS_FILE);
+
+//     const userConfig = config[username];
+//     const userToken = tokens[username];
+
+//     console.log('User config exists:', !!userConfig);
+//     console.log('User token exists:', !!userToken);
+//     console.log('Projects count:', userConfig?.projects?.length || 0);
+//     console.log('Repos count:', userConfig?.repos?.length || 0);
+
+//     if (!userToken) {
+//       console.error('No GitHub token found');
+//       return res.status(401).json({ error: 'GitHub not connected' });
+//     }
+
+//     const project = userConfig.projects.find(p => p.id === id);
+//     if (!project) {
+//       console.error('Project not found:', id);
+//       console.log('Available projects:', userConfig.projects.map(p => p.id));
+//       return res.status(404).json({ error: 'Project not found' });
+//     }
+
+//     console.log('Project found:', project.name);
+//     console.log('Looking for repo:', project.repoName);
+//     console.log('Available repos:', userConfig.repos.map(r => r.repoName));
+
+//     const repo = userConfig.repos.find(r => r.repoName === project.repoName);
+//     if (!repo) {
+//       console.error('Repository not found:', project.repoName);
+//       return res.status(404).json({ 
+//         error: 'Repository not found',
+//         details: `No repository found with name: ${project.repoName}. Available repos: ${userConfig.repos.map(r => r.repoName).join(', ') || 'none'}`
+//       });
+//     }
+
+//     console.log('Repository found:', repo.repoUrl);
+//     console.log('Starting Git operations...');
+
+//     const githubToken = decrypt(userToken.token);
+//     const git = simpleGit(project.path);
+
+//     // Check if git is initialized
+//     const isRepo = await git.checkIsRepo();
+//     console.log('Is Git repo:', isRepo);
+    
+//     // if (!isRepo) {
+//     //   console.log('Initializing Git repository...');
+//     //   await git.init();
+//     //   await git.addConfig('user.name', userToken.githubUsername);
+//     //   await git.addConfig('user.email', `${username}@soundsync.local`);
+      
+//     //   // Add authenticated remote URL
+//     //   const authenticatedUrl = repo.cloneUrl.replace(
+//     //     'https://',
+//     //     `https://${githubToken}@`
+//     //   );
+//     //   console.log('Adding remote origin...');
+//     //   await git.addRemote('origin', authenticatedUrl);
+//     // }
+// if (!isRepo) {
+//   console.log('Initializing Git repository...');
+//   await git.init();
+//   await git.addConfig('user.name', userToken.githubUsername);
+//   await git.addConfig('user.email', `${username}@soundsync.local`);
+// }
+
+// // 🧹 Always ensure correct remote (even if repo exists)
+// const remotes = await git.getRemotes(true);
+// if (remotes.find(r => r.name === 'origin')) {
+//   console.log('Old remote found, removing it...');
+//   await git.removeRemote('origin');
+// }
+
+// // Add authenticated remote URL
+// const authenticatedUrl = repo.cloneUrl.replace(
+//   'https://',
+//   `https://${githubToken}@`
+// );
+// console.log('Adding fresh remote origin...');
+// await git.addRemote('origin', authenticatedUrl);
+
+//     // Create .gitignore if it doesn't exist
+//     const gitignorePath = path.join(project.path, '.gitignore');
+//     try {
+//       await fs.access(gitignorePath);
+//       console.log('.gitignore exists');
+//     } catch {
+//       console.log('Creating .gitignore...');
+//       const gitignoreContent = `# SoundSync Auto-generated
+// *.cache
+// *.log
+// *.tmp
+// Temp/
+// Cache/
+// node_modules/
+// .DS_Store
+// Thumbs.db
+// `;
+//       await fs.writeFile(gitignorePath, gitignoreContent);
+//     }
+
+//     // Get status to see changes
+//     console.log('Checking Git status...');
+//     const status = await git.status();
+    
+//     const changes = {
+//       modified: status.modified.length,
+//       created: status.created.length + status.not_added.length,
+//       deleted: status.deleted.length
+//     };
+
+//     console.log('Changes detected:', changes);
+
+//     // Only proceed if there are changes
+//     if (changes.modified === 0 && changes.created === 0 && changes.deleted === 0) {
+//       console.log('No changes to backup');
+//       return res.json({
+//         success: true,
+//         message: 'No changes to backup',
+//         changes
+//       });
+//     }
+
+//     // Stage all changes
+//     console.log('Staging changes...');
+//     await git.add('.');
+
+//     // Commit with detailed message
+//     const timestamp = new Date().toLocaleString();
+//     const commitMessage = `Backup - ${timestamp}
+
+// Modified: ${changes.modified} files
+// Added: ${changes.created} files
+// Deleted: ${changes.deleted} files`;
+    
+//     console.log('Creating commit...');
+//     await git.commit(commitMessage);
+
+//     // Push to GitHub
+//     console.log('Pushing to GitHub...');
+//     try {
+//       await git.push('origin', 'main');
+//       console.log('Pushed to main branch');
+//     } catch (error) {
+//       console.log('Failed to push to main, trying alternatives...');
+//       // If main branch doesn't exist, try master
+//       try {
+//         await git.push('origin', 'master');
+//         console.log('Pushed to master branch');
+//       } catch {
+//         // Create main branch and push
+//         console.log('Creating main branch...');
+//         await git.branch(['-M', 'main']);
+//         await git.push(['-u', 'origin', 'main']);
+//         console.log('Pushed to new main branch');
+//       }
+//     }
+
+//     // Update project config
+//     console.log('Updating project metadata...');
+//     project.lastBackup = new Date().toISOString();
+//     project.filesCount = changes.modified + changes.created;
+    
+//     // Calculate total size
+//     const calculateSize = async (dirPath) => {
+//       let totalSize = 0;
+//       const entries = await fs.readdir(dirPath, { withFileTypes: true });
+      
+//       for (const entry of entries) {
+//         const fullPath = path.join(dirPath, entry.name);
+//         if (entry.isDirectory()) {
+//           if (!entry.name.startsWith('.') && entry.name !== 'node_modules') {
+//             totalSize += await calculateSize(fullPath);
+//           }
+//         } else {
+//           const stats = await fs.stat(fullPath);
+//           totalSize += stats.size;
+//         }
+//       }
+//       return totalSize;
+//     };
+
+//     const totalBytes = await calculateSize(project.path);
+//     const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
+//     project.size = `${totalMB} MB`;
+
+//     await writeJSON(CONFIG_FILE, config);
+//     console.log('Backup completed successfully!');
+
+//     res.json({
+//       success: true,
+//       changes,
+//       timestamp: project.lastBackup,
+//       message: 'Backup completed successfully'
+//     });
+//   } catch (error) {
+//     console.error('=== BACKUP ERROR ===');
+//     console.error('Error:', error.message);
+//     console.error('Stack:', error.stack);
+//     res.status(500).json({ error: 'Backup failed: ' + error.message });
+//   }
+// };
+
+const backupProject = async (req, res) => {
   try {
     const { id } = req.params;
     const username = req.user.username;
 
-    console.log('Reading config and tokens...');
     const config = await readJSON(CONFIG_FILE);
-    const tokens = await readJSON(TOKENS_FILE);
-
     const userConfig = config[username];
-    const userToken = tokens[username];
-
-    console.log('User config exists:', !!userConfig);
-    console.log('User token exists:', !!userToken);
-    console.log('Projects count:', userConfig?.projects?.length || 0);
-    console.log('Repos count:', userConfig?.repos?.length || 0);
-
-    if (!userToken) {
-      console.error('No GitHub token found');
-      return res.status(401).json({ error: 'GitHub not connected' });
-    }
-
     const project = userConfig.projects.find(p => p.id === id);
-    if (!project) {
-      console.error('Project not found:', id);
-      console.log('Available projects:', userConfig.projects.map(p => p.id));
-      return res.status(404).json({ error: 'Project not found' });
-    }
-
-    console.log('Project found:', project.name);
-    console.log('Looking for repo:', project.repoName);
-    console.log('Available repos:', userConfig.repos.map(r => r.repoName));
+    if (!project) return res.status(404).json({ error: 'Project not found' });
 
     const repo = userConfig.repos.find(r => r.repoName === project.repoName);
-    if (!repo) {
-      console.error('Repository not found:', project.repoName);
-      return res.status(404).json({ 
-        error: 'Repository not found',
-        details: `No repository found with name: ${project.repoName}. Available repos: ${userConfig.repos.map(r => r.repoName).join(', ') || 'none'}`
-      });
-    }
+    if (!repo) return res.status(404).json({ error: 'Repo not found' });
 
-    console.log('Repository found:', repo.repoUrl);
-    console.log('Starting Git operations...');
+    const githubToken = decrypt((await readJSON(TOKENS_FILE))[username].token);
 
-    const githubToken = decrypt(userToken.token);
-    const git = simpleGit(project.path);
+    // FULL PATH — NO MISTAKES
+    const projectPath = path.resolve(project.path);
+    console.log('BACKING UP FROM:', projectPath);
 
-    // Check if git is initialized
-    const isRepo = await git.checkIsRepo();
-    console.log('Is Git repo:', isRepo);
-    
-    if (!isRepo) {
-      console.log('Initializing Git repository...');
-      await git.init();
-      await git.addConfig('user.name', userToken.githubUsername);
-      await git.addConfig('user.email', `${username}@soundsync.local`);
-      
-      // Add authenticated remote URL
-      const authenticatedUrl = repo.cloneUrl.replace(
-        'https://',
-        `https://${githubToken}@`
-      );
-      console.log('Adding remote origin...');
-      await git.addRemote('origin', authenticatedUrl);
-    }
+    const git = simpleGit(projectPath);
 
-    // Create .gitignore if it doesn't exist
-    const gitignorePath = path.join(project.path, '.gitignore');
-    try {
-      await fs.access(gitignorePath);
-      console.log('.gitignore exists');
-    } catch {
-      console.log('Creating .gitignore...');
-      const gitignoreContent = `# SoundSync Auto-generated
-*.cache
-*.log
-*.tmp
-Temp/
-Cache/
-node_modules/
-.DS_Store
-Thumbs.db
-`;
-      await fs.writeFile(gitignorePath, gitignoreContent);
-    }
+    // DELETE OLD .git (START FRESH)
+    const gitDir = path.join(projectPath, '.git');
+    try { await fs.rm(gitDir, { recursive: true, force: true }); } catch {}
 
-    // Get status to see changes
-    console.log('Checking Git status...');
-    const status = await git.status();
-    
-    const changes = {
-      modified: status.modified.length,
-      created: status.created.length + status.not_added.length,
-      deleted: status.deleted.length
-    };
+    // INIT NEW REPO
+    await git.init();
+    await git.addConfig('user.name', username);
+    await git.addConfig('user.email', `${username}@soundsync.local`);
 
-    console.log('Changes detected:', changes);
+    // .gitignore → ONLY MUSIC FILES
+    await fs.writeFile(path.join(projectPath, '.gitignore'), `
+*
+!*.mp3
+!*.wav
+!*.flac
+!*.m4a
+!.gitignore
+    `.trim());
 
-    // Only proceed if there are changes
-    if (changes.modified === 0 && changes.created === 0 && changes.deleted === 0) {
-      console.log('No changes to backup');
-      return res.json({
-        success: true,
-        message: 'No changes to backup',
-        changes
-      });
-    }
+    // ADD REMOTE
+    const authUrl = repo.cloneUrl.replace('https://', `https://${githubToken}@`);
+    await git.addRemote('origin', authUrl);
 
-    // Stage all changes
-    console.log('Staging changes...');
+    // ADD FILES
     await git.add('.');
+    const status = await git.status();
 
-    // Commit with detailed message
-    const timestamp = new Date().toLocaleString();
-    const commitMessage = `Backup - ${timestamp}
+    console.log('FILES GOING TO GITHUB:', status.files.map(f => f.path));
 
-Modified: ${changes.modified} files
-Added: ${changes.created} files
-Deleted: ${changes.deleted} files`;
-    
-    console.log('Creating commit...');
-    await git.commit(commitMessage);
-
-    // Push to GitHub
-    console.log('Pushing to GitHub...');
-    try {
-      await git.push('origin', 'main');
-      console.log('Pushed to main branch');
-    } catch (error) {
-      console.log('Failed to push to main, trying alternatives...');
-      // If main branch doesn't exist, try master
-      try {
-        await git.push('origin', 'master');
-        console.log('Pushed to master branch');
-      } catch {
-        // Create main branch and push
-        console.log('Creating main branch...');
-        await git.branch(['-M', 'main']);
-        await git.push(['-u', 'origin', 'main']);
-        console.log('Pushed to new main branch');
-      }
+    if (status.files.length === 0) {
+      return res.json({ success: true, message: 'Nothing to back up' });
     }
 
-    // Update project config
-    console.log('Updating project metadata...');
+    await git.commit(`Backup: ${new Date().toLocaleString()}`);
+    await git.push('origin', 'main', { '--force': null });
+
+    // UPDATE DASHBOARD
     project.lastBackup = new Date().toISOString();
-    project.filesCount = changes.modified + changes.created;
-    
-    // Calculate total size
-    const calculateSize = async (dirPath) => {
-      let totalSize = 0;
-      const entries = await fs.readdir(dirPath, { withFileTypes: true });
-      
-      for (const entry of entries) {
-        const fullPath = path.join(dirPath, entry.name);
-        if (entry.isDirectory()) {
-          if (!entry.name.startsWith('.') && entry.name !== 'node_modules') {
-            totalSize += await calculateSize(fullPath);
-          }
-        } else {
-          const stats = await fs.stat(fullPath);
-          totalSize += stats.size;
-        }
-      }
-      return totalSize;
-    };
-
-    const totalBytes = await calculateSize(project.path);
-    const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
-    project.size = `${totalMB} MB`;
-
+    project.filesCount = status.files.length;
+    project.size = `${(await getDirSize(projectPath) / (1024*1024)).toFixed(2)} MB`;
     await writeJSON(CONFIG_FILE, config);
-    console.log('Backup completed successfully!');
 
-    res.json({
-      success: true,
-      changes,
-      timestamp: project.lastBackup,
-      message: 'Backup completed successfully'
-    });
+    res.json({ success: true, message: 'Backup done!' });
   } catch (error) {
-    console.error('=== BACKUP ERROR ===');
-    console.error('Error:', error.message);
-    console.error('Stack:', error.stack);
-    res.status(500).json({ error: 'Backup failed: ' + error.message });
+    console.error('BACKUP ERROR:', error.message);
+    res.status(500).json({ error: error.message });
   }
 };
 

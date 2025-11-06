@@ -1,9 +1,0 @@
-# SoundSync Auto-generated
-*.cache
-*.log
-*.tmp
-Temp/
-Cache/
-node_modules/
-.DS_Store
-Thumbs.db

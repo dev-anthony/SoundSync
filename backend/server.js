@@ -736,6 +736,7 @@ const path = require('path');
 const fs = require('fs').promises;
 
 // Import routes
+const collaborationRoutes = require('./routes/collaborationRoutes');
 const authRoutes = require('./routes/authRoutes');
 const githubRoutes = require('./routes/githubRoutes');
 const projectRoutes = require('./routes/projectRoutes');
@@ -788,6 +789,7 @@ app.use('/api/github', githubRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/backup', backupRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/collaboration', collaborationRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

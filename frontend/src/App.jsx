@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import OnboardingPage from './pages/OnboardingPage';
 import Dashboard from './pages/DashboardPage';
 import SettingsPage from './pages/SettingsPage';
+import CollaborationPage from './pages/CollaborationPage';
 
 // Import components
 import Notification from './components/Notification';
@@ -40,10 +41,10 @@ const App = () => {
         api.get('/github/repos'),
         api.get('/settings')
       ]);
-
+      
       setProjects(projectsRes.data.projects || []);
       setRepos(reposRes.data.repos || []);
-
+      
       if (settingsRes.data.settings.githubConnected) {
         setCurrentPage('dashboard');
       } else {
@@ -58,12 +59,12 @@ const App = () => {
       setLoading(false);
     }
   };
-
+  
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 3000);
   };
-
+  
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
@@ -72,22 +73,25 @@ const App = () => {
     setRepos([]);
     setCurrentPage('welcome');
   };
-
+  
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="min-h-screen">
       {notification && <Notification message={notification.message} type={notification.type} />}
       
       {currentPage === 'welcome' && (
         <WelcomePage 
-          setCurrentPage={setCurrentPage} 
+          setCurrentPage={setCurrentPage}
         />
       )}
       
@@ -104,7 +108,6 @@ const App = () => {
           setCurrentPage={setCurrentPage}
           setUser={setUser}
           showNotification={showNotification}
-          loadUserData={loadUserData}
         />
       )}
       
@@ -112,6 +115,7 @@ const App = () => {
         <OnboardingPage 
           setCurrentPage={setCurrentPage}
           user={user}
+          handleLogout={handleLogout}
           showNotification={showNotification}
           setRepos={setRepos}
         />
@@ -124,6 +128,7 @@ const App = () => {
           projects={projects}
           setProjects={setProjects}
           repos={repos}
+          setRepos={setRepos}
           handleLogout={handleLogout}
           showNotification={showNotification}
         />
@@ -133,7 +138,15 @@ const App = () => {
         <SettingsPage 
           setCurrentPage={setCurrentPage}
           user={user}
-          repos={repos}
+          handleLogout={handleLogout}
+          showNotification={showNotification}
+        />
+      )}
+      
+      {currentPage === 'collaboration' && (
+        <CollaborationPage 
+          setCurrentPage={setCurrentPage}
+          user={user}
           handleLogout={handleLogout}
           showNotification={showNotification}
         />
