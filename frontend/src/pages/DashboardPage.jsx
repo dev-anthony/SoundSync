@@ -377,6 +377,7 @@ const Dashboard = ({
     if (repos && repos.length) setRepoInfo(repos[0]);
   }, [repos]);
 
+
   // fetch fresh project list
   const fetchProjects = async () => {
     try {
@@ -386,6 +387,11 @@ const Dashboard = ({
       console.error(err);
     }
   };
+  //fetch on every rerender
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+  
 
   // backup – only refresh, never add a new card
   const handleBackupProject = async projectId => {
