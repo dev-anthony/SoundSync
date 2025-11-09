@@ -388,10 +388,9 @@ const Dashboard = ({
     }
   };
   //fetch on every rerender
-  useEffect(() => {
+  setInterval(() => {
     fetchProjects();
-  }, []);
-  
+  }, 3000); // every 3 second
 
   // backup – only refresh, never add a new card
   const handleBackupProject = async projectId => {

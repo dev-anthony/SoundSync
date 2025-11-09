@@ -1,1 +1,25 @@
-{}
+{
+  "Anthony Joseph Achibi": {
+    "repos": [
+      {
+        "repoName": "producer-backups",
+        "repoUrl": "https://github.com/dev-anthony/producer-backups",
+        "cloneUrl": "https://github.com/dev-anthony/producer-backups.git",
+        "isPrivate": true,
+        "createdAt": "2025-11-07T08:14:54.858Z"
+      }
+    ],
+    "projects": [
+      {
+        "id": "proj_1762503318013",
+        "name": "afro",
+        "path": "C:\\Users\\Anthony achibi\\SoundSync\\backend\\projects\\Anthony Joseph Achibi\\proj_1762503318013",
+        "repoName": "producer-backups",
+        "lastBackup": "2025-11-07T08:15:54.148Z",
+        "filesCount": 2,
+        "size": "13.22 MB",
+        "createdAt": "2025-11-07T08:15:18.454Z"
+      }
+    ]
+  }
+}
